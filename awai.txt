@@ -1,0 +1,155 @@
+// Require the NPM packages that we need
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const user=require('../models/usermodel')
+// Initalise a new express application
+const app = express();
+
+// Set a default environment port or cutom port - 5000
+const port = process.env.PORT || 5000;
+
+// This allows us to pass data from the form
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+// Set Cookie Parser, sessions and flash
+app.use(cookieParser('NotSoSecret'));
+app.use(session({
+  secret : 'something',
+  cookie: { maxAge: 60000 },
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+// Setting our view engine as EJS
+app.set('view engine','ejs');
+
+
+app.use(flash());
+// This allows us to pass data from the form
+
+
+// Setting our view engine as EJS
+
+
+ const indexpage= (req, res)=> {
+     
+   const message = req.flash('user');
+   res.render('signup.ejs', { message:req.flash('message') } )
+ };
+const nameDuplicate=(re,res)=>
+{
+   user.findOne({"username":re.body.username}).then(response=>{
+      if(response)
+      //  {console.log(response)
+      //      m='UserName Already exist kindly try another one!'
+     
+      //     error=1
+      //     req.flash('message',m)
+      // res.redirect('/')
+      // }
+  
+   )}
+const emailDuplicate=(re,res)=>
+{
+   user.findOne({"Email":email}).then (response=>{
+      if(response)
+
+     {     
+       m='WE Already have an account associated with this email!'
+     
+       req.flash('message',m)
+     res.redirect('/')
+       error=1
+      }
+    })
+}
+const  store  =(req, res) => 
+{
+
+   const u = new user({
+      username: req.body.username,
+      Email: req.body.Email,
+      password: req.body.password,
+
+
+   })
+  
+   
+
+   u.save().then(() => {
+     req.flash('message',"data submitted")
+    m='Data saved!'
+
+
+   }
+  
+   )
+}
+
+
+
+
+
+
+
+
+
+
+   const redirectLogin = (req, res, next) =>
+   {
+      if (!req.sessionID) {
+         res.redirect = ('/login');
+      }
+
+      else
+         next();
+   }
+   const dash = (re, res) => {
+
+
+      res.render('dashboard.ejs')
+   }
+   const authenticate = (re, res) => {
+      const u = re.query.username
+
+   
+      user.findOne({ username: u }).then((response) => {
+         if (response.password === re.query.pass) {
+            re.sessionID = response.id
+            //re.sessionID=re.query.UserName
+            //session.save();
+            //re.session.authenticate=true
+            //re.session.authenticate=true
+
+            res.render('dashboard.ejs')
+            //  re.session.user
+         }
+         else {
+            res.send("invalid user")
+         }
+
+
+         // if(username.password===re.query.pass)
+         // {
+
+         // }
+         // else
+         // {
+         //    console.log('Invalid password')
+         // }
+      }).catch(() => {
+         console.log("no user name found")
+      })
+
+
+
+
+
+   }
+
+  
+   module.exports = { store,indexpage, authenticate, dash, redirectLogin}
