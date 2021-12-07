@@ -139,7 +139,7 @@ function initMap() {
   response.innerText = "";
   responseDiv = document.createElement("div");
   responseDiv.id = "response-container";
-  responseDiv.appendChild(response);
+  //responseDiv.appendChild(response);
 
   const instructionsElement = document.createElement("p");
 
@@ -156,6 +156,7 @@ function initMap() {
   });
   map.addListener("click", (e) => {
     geocode({ location: e.latLng });
+  
   });
   submitButton.addEventListener("click", () =>
     geocode({ address: inputText.value })
@@ -181,6 +182,12 @@ function geocode(request) {
       map.setCenter(results[0].geometry.location);
       marker.setPosition(results[0].geometry.location);
       marker.setMap(map);
+      console.log(results[0].address_components[0].long_name)
+      var infoWindow = new google.maps.InfoWindow({
+            content :results[0].formatted_address})
+           // results[0].address_components[0].long_name})
+          infoWindow.open(map, marker);
+
       responseDiv.style.display = "block";
       response.innerText = JSON.stringify(result, null, 2);
       return results;
