@@ -178,18 +178,23 @@ function geocode(request) {
     .geocode(request)
     .then((result) => {
       const { results } = result;
-
+   var i=0;
       map.setCenter(results[0].geometry.location);
       marker.setPosition(results[0].geometry.location);
       marker.setMap(map);
       console.log(results[0].address_components[0].long_name)
-      var infoWindow = new google.maps.InfoWindow({
+      if(i>1)
+      {
+          delete infoWindow
+      }
+      let infoWindow = new google.maps.InfoWindow({
             content :results[0].formatted_address})
            // results[0].address_components[0].long_name})
           infoWindow.open(map, marker);
-
+     
       responseDiv.style.display = "block";
       response.innerText = JSON.stringify(result, null, 2);
+      i++
       return results;
     })
     .catch((e) => {

@@ -28,7 +28,7 @@ router.get('/dashboard',controller.dash)
 router.get('/',controller.indexpage)
 router.get('/login',controller.login)
 router.post('/signup',controller.nameDuplicate,controller.emailDuplicate,controller.store)
-
+router.get('/resetPassword',controller.reset)
 
  router.post('/login',controller.authenticat)
 

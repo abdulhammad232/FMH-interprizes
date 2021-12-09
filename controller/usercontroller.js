@@ -56,7 +56,9 @@ const authenticat=(re,res,next)=>{
     
       })(re,res,next);
 }
-
+const reset=(re,res)=>{
+   res.render('forget.ejs')
+}
    const emailDuplicate =(re,res,next)=>
 {console.log('elllooooooooooooo')
    user.findOne({"Email":re.body.Email}).then (response=>{
@@ -110,5 +112,5 @@ const dash=(re,res)=>{
 
    res.render('dashboard.ejs')
 }
-module.exports = { store,nameDuplicate,indexpage,emailDuplicate,login,authenticat,dash}
+module.exports = { store,nameDuplicate,indexpage,emailDuplicate,login,authenticat,dash,reset}
    
