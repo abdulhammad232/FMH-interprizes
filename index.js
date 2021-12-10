@@ -8,7 +8,7 @@ app.use(passport.initialize())
 // app.use(flash())
 // app.set('view-engine', 'ejs')
 const userroutes=require('./routes/userroutes')
-mongoose.connect(`mongodb://127.0.0.1:27017/finalproject`, {
+mongoose.connect(`mongodb://localhost:27017/TestDB`, {
   useNewUrlParser: true,
 	useUnifiedTopology: true
 });
